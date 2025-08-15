@@ -97,4 +97,46 @@ GROUP BY film.name
 ORDER BY biggest_num DESC
 LIMIT 1;
 
+16.
+USE galaxycinema;
+SELECT DAYNAME(start_time) AS day_of_week, COUNT(DISTINCT film_id) AS number_of_films
+FROM screening
+GROUP BY day_of_week
+ORDER BY number_of_films DESC;
+
+17.
+SELECT film.name, SUM(length_min) as Total_mins
+FROM film
+JOIN screening ON screening.film_id=film.film_id
+WHERE DATE(start_time)='2022-05-28'
+GROUP BY film.name
+ORDER BY Total_mins DESC;
+
+18.
+USE galaxycinema;
+SELECT film.name, AVG(length_min) AS AVG_mins
+FROM film
+JOIN screening ON screening.film_id = film.film_id
+GROUP BY film.name
+HAVING AVG_mins > (
+    SELECT AVG(length_min) FROM film
+);
+
+18.1
+SELECT film.name, AVG(length_min) AS AVG_mins
+FROM film
+JOIN screening ON screening.film_id = film.film_id
+GROUP BY film.name
+HAVING AVG_mins < (
+    SELECT AVG(length_min) FROM film
+);
+
+19.
+SELECT room.name, seat.room_id, MIN(reserved_seat.seat_id) as Least_seat
+FROM seat
+JOIN reserved_seat ON seat.seat_id=reserved_seat.seat_id
+JOIN room ON seat.room_id = room.room_id
+GROUP BY room.name, seat.room_id
+ORDER BY Least_seat DESC
+LIMIT 1;
 
